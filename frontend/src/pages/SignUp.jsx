@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
 import {BiShow} from 'react-icons/bi'
 import {BiHide} from 'react-icons/bi'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+
 const SignUp = () => {
+    const navigate = useNavigate()
     const [showPassword,setShowPassword] = useState(false)
     const [showConfirmPassword,setConfirmShowPassword] = useState(false)
     const [data,setData] = useState({
@@ -34,6 +36,7 @@ const SignUp = () => {
         if(firstName && email && password && confirmPassword){
             if(password === confirmPassword){
                 alert("successfull")
+                navigate("/login")
             }
             else{
                 alert("password and confirm password not equal")
@@ -67,9 +70,9 @@ const SignUp = () => {
                     '/>
                     <span className='flex text-xl' onClick={handleShowPassword}>{showPassword ?<BiShow/>:<BiHide/>}</span>
                 </div> 
-                <label htmlFor="confirmpassword">Confirm Password</label>
+                <label htmlFor="confirmPassword">Confirm Password</label>
                 <div className='flex px-2 py-2 mt-1 mb-2 rounded bg-slate-200 outline focus-within:outline focus-within:outline-blue-500'>
-                    <input type={showConfirmPassword ? "text" : "password"} id='confirmpassword'name='confirmpassword'value={data.confirmPassword} onChange={handleOnChange} className=' w-full bg-slate-200 border-none outline-none 
+                    <input type={showConfirmPassword ? "text" : "password"} id='confirmPassword'name='confirmPassword'value={data.confirmPassword} onChange={handleOnChange} className=' w-full bg-slate-200 border-none outline-none 
                     '/>
                     <span className='flex text-xl' onClick={handleShowConfirmPassword}>{showConfirmPassword ?<BiShow/>:<BiHide/>}</span>
                 </div>
