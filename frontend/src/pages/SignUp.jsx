@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import {BiShow} from 'react-icons/bi'
 import {BiHide} from 'react-icons/bi'
 import { Link, useNavigate } from 'react-router-dom'
+import { ImageToBase64 } from '../utility/imageToBase64'
+import imgUpload from '../assets/default.png'
 
 const SignUp = () => {
     const navigate = useNavigate()
@@ -13,6 +15,7 @@ const SignUp = () => {
         email:"",
         password:"",
         confirmPassword:"",
+        image: ""
     })
     const handleShowPassword = () => {
         setShowPassword(preve => !preve)
@@ -27,6 +30,17 @@ const SignUp = () => {
             return{
                 ...preve,
                 [name] : value
+            }
+        })
+    }
+    const handleUploadProfileImage = async(e) => {
+        // console.log(e.target.files[0]);
+        const data = await ImageToBase64(e.target.files[0])
+        // console.log(data);
+        setData((preve)=>{
+            return{
+                ...preve,
+                image: data
             }
         })
     }
@@ -51,8 +65,14 @@ const SignUp = () => {
     <div className='p-3 md:p-4'>
         <div className='w-full max-w-sm bg-white m-auto flex  flex-col p-4'>
             <h5 className='text-center text-2xl font-bold'>Sign Up</h5>
-            <div className="w-20 overflow-hidden rounded-full drop-shadow-md shadow-md m-auto">
-                <img className='' src="" alt="" />
+            <div className="w-20 overflow-hidden rounded-full drop-shadow-md shadow-md m-auto relative">
+                <img className='w-full h-full' src={data.image ? data.image : imgUpload} alt="" />
+            <label htmlFor="profileImage">
+                <div className='absolute bottom-0 h-1/2 bg-slate-500 bg-opacity-50 w-full text-center cursor-pointer'>
+                    <p className='text-sm p-1 text-white'>Upload</p>
+                </div>
+                <input type={"file"} id='profileImage' accept='image/*' className='hidden' onChange={handleUploadProfileImage}/>
+            </label>
             </div>
             <form className='w-full py-3 flex flex-col' onSubmit={handleSubmit}>
                 <label htmlFor="firstName" className=''>First Name</label>
