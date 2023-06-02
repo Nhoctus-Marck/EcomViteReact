@@ -5,6 +5,9 @@ import { Link, useNavigate } from 'react-router-dom'
 import { ImageToBase64 } from '../utility/imageToBase64'
 import imgUpload from '../assets/default.png'
 
+axios.defaults.baseURL = process.env.REACT_APP_API_URL || "http://localhost:8080";
+
+
 const SignUp = () => {
     const navigate = useNavigate()
     const [showPassword,setShowPassword] = useState(false)
@@ -44,11 +47,20 @@ const SignUp = () => {
             }
         })
     }
-    const handleSubmit = (e)=>{
+    const handleSubmit = async(e)=>{
         e.preventDefault()
         const {firstName,email,password,confirmPassword} = data
         if(firstName && email && password && confirmPassword){
             if(password === confirmPassword){
+                const fetchData = await fetch(`axios.defaults.baseURL/signup`,{
+                    method : "POST",
+                    headers : {
+                      "content-type" : "application/json"
+                    },
+                    body : JSON.stringify(data)
+                  })
+                  const dataRes = await fetchData.json()
+                console.log(dataRes);
                 alert("successfull")
                 navigate("/login")
             }
