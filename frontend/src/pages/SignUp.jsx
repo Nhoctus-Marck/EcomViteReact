@@ -5,9 +5,6 @@ import { Link, useNavigate } from 'react-router-dom'
 import { ImageToBase64 } from '../utility/imageToBase64'
 import imgUpload from '../assets/default.png'
 
-axios.defaults.baseURL = process.env.REACT_APP_API_URL || "http://localhost:8080";
-
-
 const SignUp = () => {
     const navigate = useNavigate()
     const [showPassword,setShowPassword] = useState(false)
@@ -52,7 +49,7 @@ const SignUp = () => {
         const {firstName,email,password,confirmPassword} = data
         if(firstName && email && password && confirmPassword){
             if(password === confirmPassword){
-                const fetchData = await fetch(`axios.defaults.baseURL/signup`,{
+                const fetchData = await fetch(`http://localhost:8080/signup`,{
                     method : "POST",
                     headers : {
                       "content-type" : "application/json"
@@ -60,9 +57,9 @@ const SignUp = () => {
                     body : JSON.stringify(data)
                   })
                   const dataRes = await fetchData.json()
-                console.log(dataRes);
-                alert("successfull")
-                navigate("/login")
+                // console.log(dataRes);
+                alert(dataRes.message)
+                // navigate("/login")
             }
             else{
                 alert("password and confirm password not equal")
