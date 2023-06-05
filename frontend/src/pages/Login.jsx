@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import {BiShow} from 'react-icons/bi'
 import {BiHide} from 'react-icons/bi'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import {toast} from "react-hot-toast"
 
 const Login = () => {
+    const navigate = useNavigate()
     const [showPassword,setShowPassword] = useState(false)
     const [data,setData] = useState({
         firstName:"",
@@ -24,16 +26,35 @@ const Login = () => {
             }
         })
     }
-    const handleSubmit = (e)=>{
+    const handleSubmit = async (e)=>{
         e.preventDefault()
-        const {email,password} = data
-        if(email && password){
-                alert("successfull")
+        if(email && password ){
+            const fetchData = await fetch(`http://localhost:8080/login`,{
+              method : "POST",
+              headers : {
+                "content-type" : "application/json"
+              },
+              body : JSON.stringify(data)
+            })
+      
+            const dataRes = await fetchData.json()
+            console.log(dataRes)
+            
+            toast(dataRes.message)
+            
+            if(dataRes.alert){
+            //   dispatch(loginRedux(dataRes))
+              setTimeout(() => {
+                navigate("/")
+              }, 1000);
+            }
+      
+            // console.log(userData)
+          }
+          else{
+              alert("Please Enter required fields")
+          }
         }
-        else{
-            alert("Please Enter required fields")
-        }
-    }
   return (
     <div className='p-3 md:p-4'>
         <div className='w-full max-w-sm bg-white m-auto flex  flex-col p-4'>

@@ -33,7 +33,6 @@ const userSchema = mongoose.Schema({
 
 const userModel = mongoose.model("user",userSchema)
 
-
 //API
 
 app.get("/",(req,res)=>{
@@ -55,10 +54,35 @@ app.post("/signup", async (req, res) => {
         image,
         });
     res.status(201).json({
-        message: "Account Created successfully",
+        message: "Account Created successfully",alert: true,
         firstName,
       });
   }
+})
+//api login
+app.post("/login", async (req, res) => {
+    const { email } = req.body;
+    const data = await userModel.findOne({email : email})
+    if (data) {
+        const dataSend = {
+          firstName: data.firstName,
+          lastName: data.lastName,
+          email: data.email,
+          image: data.image,
+        };
+      res.send({
+        message: "Login is successfully",
+        alert: true,
+        data: dataSend,
+      });
+    } else {
+      res.send({
+        message: "Email is not available, please sign up",
+        alert: false,
+      });
+    }
+
+
 })
 
 app.listen(PORT, () => console.log("server is running at port : " + PORT));

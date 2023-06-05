@@ -4,6 +4,7 @@ import {BiHide} from 'react-icons/bi'
 import { Link, useNavigate } from 'react-router-dom'
 import { ImageToBase64 } from '../utility/imageToBase64'
 import imgUpload from '../assets/default.png'
+import {toast} from "react-hot-toast"
 
 const SignUp = () => {
     const navigate = useNavigate()
@@ -58,7 +59,8 @@ const SignUp = () => {
                   })
                   const dataRes = await fetchData.json()
                 // console.log(dataRes);
-                alert(dataRes.message)
+                // alert(dataRes.message)
+                toast(dataRes.message)
                 // navigate("/login")
             }
             else{
