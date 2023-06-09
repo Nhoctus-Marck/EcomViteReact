@@ -10,6 +10,8 @@ import Contact from './pages/Contact'
 import Login from './pages/Login'
 import NewProduct from './pages/NewProduct'
 import SignUp from './pages/SignUp'
+import {store} from './redux/index'
+import {Provider} from 'react-redux'
 
 
 
@@ -27,6 +29,7 @@ const router = createBrowserRouter(
   )
 )
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <RouterProvider router={router}/>
-,
+  <Provider store={store}>
+    <RouterProvider router={router}/>
+  </Provider>
 )
