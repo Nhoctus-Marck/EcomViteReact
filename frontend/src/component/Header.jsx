@@ -5,7 +5,7 @@ import {HiOutlineUserCircle} from 'react-icons/hi'
 import {BsCartFill} from 'react-icons/bs'
 import { useSelector , useDispatch} from 'react-redux'
 import {logoutRedux} from "../redux/userSlice"
-
+import {toast} from "react-hot-toast"
 
 const Header = () => {
     const [showMenu,setShowMenu] = useState(false)
@@ -18,6 +18,7 @@ const Header = () => {
     const handleLogout = ()=>{
       dispatch(logoutRedux())
       toast("Logout Successfully")
+      console.log(userData);
     }
   return (
     <header className="fixed shadow-md w-full h-16 px-2 md:px-4 z-50 bg-white">
@@ -48,7 +49,7 @@ const Header = () => {
               <div className="absolute right-2 bg-white py-2  shadow drop-shadow-md flex flex-col">
                 <Link to={'newProduct'} className="whitespace-nowrap cursor-pointer">New product</Link>
                 {
-                  userData.image ? <p className='cursor-pointer text-white px-2 bg-red-500' onClick={handleLogout}>Logout</p> : <Link to={'login'} className="whitespace-nowrap px-2 cursor-pointer">Login</Link>
+                  userData ? <p className='cursor-pointer text-white px-2 bg-red-500' onClick={handleLogout}>Logout</p> : <Link to={'login'} className="whitespace-nowrap px-2 cursor-pointer">Login</Link>
                 }
                 
               </div>
