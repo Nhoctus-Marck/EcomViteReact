@@ -47,9 +47,11 @@ const Header = () => {
             </div>
             {showMenu && (
               <div className="absolute right-2 bg-white py-2  shadow drop-shadow-md flex flex-col">
-                <Link to={'newProduct'} className="whitespace-nowrap cursor-pointer">New product</Link>
                 {
-                  userData ? <p className='cursor-pointer text-white px-2 bg-red-500' onClick={handleLogout}>Logout</p> : <Link to={'login'} className="whitespace-nowrap px-2 cursor-pointer">Login</Link>
+                  userData.email === "Ejem2@gmail.com" && <Link to={'newProduct'} className="whitespace-nowrap cursor-pointer">New product</Link>
+                }
+                {
+                  userData.email ? <p className='cursor-pointer text-white px-2 bg-red-500' onClick={handleLogout}>Logout</p> : <Link to={'login'} className="whitespace-nowrap px-2 cursor-pointer">Login</Link>
                 }
                 
               </div>

@@ -17,7 +17,6 @@ mongoose.connect(process.env.MONGODB_URL)
 .catch((err)=>console.log(err))
 
 //Schema
-
 const userSchema = mongoose.Schema({
     firstName: String,
     lastName: String,
@@ -29,9 +28,19 @@ const userSchema = mongoose.Schema({
     confirmPassword: String,
     image: String,
 })
-// model
 
+const productSchema = mongoose.Schema({
+  name:String,
+  category:String,
+  image:String,
+  price :String,
+  description:String,
+});
+
+// model
+const productModel = mongoose.model("product",productSchema)
 const userModel = mongoose.model("user",userSchema)
+// const productModel = product(mongoose.model("user",productSchema))
 
 //API
 
@@ -62,7 +71,8 @@ app.post("/signup", async (req, res) => {
 //api login
 app.post("/login", async (req, res) => {
     const { email } = req.body;
-    const data = await userModel.findOne({email : email})
+    const { password } = req.body;
+    const data = await userModel.findOne({email : email,password : password})
     if (data) {
         const dataSend = {
           firstName: data.firstName,
@@ -77,12 +87,19 @@ app.post("/login", async (req, res) => {
       });
     } else {
       res.send({
-        message: "Email is not available, please sign up",
+        message: "Check your Email and Password data and try login again",
         alert: false,
       });
     }
+})
 
-
+app.post("/UploadProduct", async (req, res) => {
+  console.log(req.body);
+  const data = await productModel(req.body)
+  const datasave = await data.save()
+  res.send({
+    message: "Upload successfully",
+  });
 })
 
 app.listen(PORT, () => console.log("server is running at port : " + PORT));
