@@ -68,11 +68,11 @@ const NewProduct = () => {
         <label htmlFor="category">Category</label>
         <select className='bg-slate-200 p-1 my-1 'id="category" name="category" onChange={hangleOnChange} value={data.category}>
         <option value={"other"}>Select Category</option>
-          <option value={"fruits"}>Fruits</option>
-          <option value={"vegetable"}>Vegetable</option>
-          <option value={"icream"}>Icream</option>
-          <option value={"sosa"}>Sosa</option>
-          <option value={"pizza"}>Pizza</option>
+          <option value={"jackets"}>Jackets</option>
+          <option value={"sneakers"}>Sneakers</option>
+          <option value={"t-shirts"}>T-shirts</option>
+          <option value={"accessories"}>Accessories</option>
+          <option value={"pants"}>Pants</option>
         </select>
         <label htmlFor="image">Image
                 <div className="h-40 w-full bg-slate-200 my-3 rounded flex items-center justify-center cursor-pointer overflow-hidden">

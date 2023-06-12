@@ -51,7 +51,7 @@ const Header = () => {
                   userData.email === "Ejem2@gmail.com" && <Link to={'newProduct'} className="whitespace-nowrap cursor-pointer">New product</Link>
                 }
                 {
-                  userData.email ? <p className='cursor-pointer text-white px-2 bg-red-500' onClick={handleLogout}>Logout</p> : <Link to={'login'} className="whitespace-nowrap px-2 cursor-pointer">Login</Link>
+                  userData.email ? <p className='cursor-pointer text-white px-2 bg-red-500' onClick={handleLogout}>Logout {userData.firstName}</p> : <Link to={'login'} className="whitespace-nowrap px-2 cursor-pointer">Login</Link>
                 }
                 
               </div>
