@@ -1,11 +1,28 @@
 import React from 'react'
 import HomeCard from '../component/HomeCard'
-import { useSelector } from 'react-redux'
-
+import { useSelector} from 'react-redux'
+import { useRef } from 'react'
+import CardFeature from '../component/CardFeature'
+import {GrFormPrevious ,GrFormNext} from "react-icons/gr"
 const Home = () => {
   const productData = useSelector((state)=>state.product.productList)
   console.log(productData)
+
   const homeProductCartList = productData.slice(1,5)
+  const homeProductCartListTshirts = productData.filter(el=>el.category === "t-shirts",[])
+  console.log(homeProductCartListTshirts)
+
+  const loadingArray = new Array(4).fill(null)
+  const loadingArrayFeature = new Array(10).fill(null)
+
+  const slideProductRef = useRef()
+  const nextProduct = ()=>{
+    slideProductRef.current.scrollLeft += 200
+  }
+  const preveProduct= ()=>{
+    slideProductRef.current.scrollLeft -= 200
+  }
+
   return (
     <div className='p-2 md:p-4'>
       <div className="md:flex gap-4 py-2">
@@ -20,7 +37,7 @@ const Home = () => {
         </div>  
         <div className="md:w-1/2 flex flex-wrap gap-5 p-4 justify-center">
           {
-            homeProductCartList[0] && homeProductCartList.map(el =>{
+            homeProductCartList[0] ? homeProductCartList.map(el =>{
               return(
                 <HomeCard
                 key={el._id}
@@ -29,17 +46,49 @@ const Home = () => {
                 price={el.price}
                 category={el.category}/>
               )
+            }):loadingArray.map((el,index)=>{
+              return(
+                <HomeCard
+                key={index}
+                loading={"loading..."}
+                />
+              )
             })
           }
-          
-        </div>
-        <div className="">
-          <h2 className="font-bold text-2xl text-slate-800">New Clothes</h2>
-          <div className="">
-            Cart Component
-          </div>
         </div>
       </div>
+      <div className="">
+        <div className='flex w-full items-center'>
+              <h2 className="font-bold text-2xl text-slate-800 mb-4">New Clothes</h2>
+          <div className='ml-auto flex gap-4'>
+            <button onClick={preveProduct} className='bg-slate-500 hover:b-slate-400 text-lg p-1 rounded'><GrFormPrevious/></button>
+            <button onClick={nextProduct} className='bg-slate-500 hover:b-slate-400 text-lg p-1 rounded'><GrFormNext/></button>
+          </div>
+        </div>
+          <div className="flex gap-5 overflow-scroll scrollbar-none scroll-smooth transition-all" ref={slideProductRef}>
+            {homeProductCartList[0] ?
+              homeProductCartList.map(el=>{
+                return(
+                  <CardFeature 
+                  key={el.id}
+                  image={el.image}
+                  name={el.name}
+                  price={el.price}
+                  category={el.category}
+                  />
+                )
+              })
+              : loadingArrayFeature.map((el,index)=>{
+                return(
+                  <CardFeature
+                  key={index}
+                  loading={"loading..."}
+                  />
+                )
+              })
+            }
+          </div>
+        </div>
     </div>
   )
 }
