@@ -12,6 +12,7 @@ import NewProduct from './pages/NewProduct'
 import SignUp from './pages/SignUp'
 import {store} from './redux/index'
 import {Provider} from 'react-redux'
+import Cart from './pages/Cart'
 
 
 
@@ -26,6 +27,7 @@ const router = createBrowserRouter(
       <Route path='login' element={<Login/>}/>
       <Route path='newProduct' element={<NewProduct/>}/>
       <Route path='signUp' element={<SignUp/>}/>
+      <Route path='cart' element={<Cart/>}/>
     </Route >
   )
 )

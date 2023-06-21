@@ -15,7 +15,7 @@ const Home = () => {
     (el) => el.category === el.category,
     []
   );
-  console.log(homeProductCartListTshirts);
+  // console.log(homeProductCartListTshirts);
 
   const loadingArray = new Array(4).fill(null);
   const loadingArrayFeature = new Array(10).fill(null);
@@ -65,7 +65,7 @@ const Home = () => {
                 );
               })
             : loadingArray.map((el, index) => {
-                return <HomeCard key={index} loading={"loading..."} />;
+                return <HomeCard key={index+"loading"} loading={"loading..."} />;
               })}
         </div>
       </div>
@@ -97,7 +97,7 @@ const Home = () => {
             ? homeProductCartListTshirts.map((el) => {
                 return (
                   <CardFeature
-                    key={el.id}
+                    key={el.id+"clothes"}
                     image={el.image}
                     name={el.name}
                     price={el.price}
@@ -107,7 +107,7 @@ const Home = () => {
                 );
               })
             : loadingArrayFeature.map((el, index) => {
-                return <CardFeature key={index} loading={"loading..."} />;
+                return <CardFeature key={index+"cartLoading"} loading={"loading..."} />;
               })}
         </div>
       </div>
