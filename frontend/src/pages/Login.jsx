@@ -41,18 +41,22 @@ const Login = () => {
             })
       
             const dataRes = await fetchData.json()
-            console.log(dataRes)
-            console.log(userData);
+            // console.log(dataRes)
+            // console.log(userData);
             toast(dataRes.message)
             
             if(dataRes.alert){   
               dispatch(loginRedux(dataRes))
+              window.sessionStorage.setItem("token",dataRes.data.email)
+              window.sessionStorage.setItem("image",dataRes.data.image)
+              // console.log(dataRes.data.email);
+              window.sessionStorage.setItem("loggedIn",true)
+              // console.log(dataRes.data)
               setTimeout(() => {
                 navigate("/")
               }, 1000);
             }
       
-            // console.log(userData)
           }
           else{
               alert("Please Enter required fields")

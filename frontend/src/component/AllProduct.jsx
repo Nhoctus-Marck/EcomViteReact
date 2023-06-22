@@ -36,7 +36,7 @@ const AllProduct = ({heading}) => {
         <div className="flex gap-4 justify-center overflow-scroll scrollbar-none">
           {categoryList[0] ?
             categoryList.map((el) => {
-              return <FilterProduct key={el} category={el} onClick={() => handleFilterProduct(el)}/>;
+              return <FilterProduct key={el} category={el} isActive={el.toLowerCase() === filterby.toLowerCase()} onClick={() => handleFilterProduct(el)}/>;
             })
             :
             <div className="flex justify-center items-center h-full">

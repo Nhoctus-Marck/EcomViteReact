@@ -2,13 +2,45 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import CartProduct from '../component/cartProduct'
 // import CartProduct from "../component/cartProduct";
-import EmptyCartImg from "../../public/empty.png"
+import EmptyCartImg from "../../src/assets/empty.png"
+import { toast } from 'react-hot-toast'
+import {loadStripe} from "@stripe/stripe-js"
+import { useNavigate } from 'react-router-dom'
 
 const Cart = () => {
     const productCartItem = useSelector((state)=>state.product.cartItem)
     // console.log(productCartItem)
     const totalPrice = productCartItem.reduce((acc,curr)=>acc +parseInt(curr.total),0)
     const totalQty = productCartItem.reduce((acc,curr)=>acc +parseInt(curr.qty),0)
+    const user = useSelector(state=>state.user)
+    const navigate = useNavigate()
+
+    
+
+    const handlePayment = async()=>{
+      if(user.email){
+      const stripePromise = await loadStripe(`pk_test_51NLcIOJD6UJJlC7rdJH3YNi5ZZ1lOe6Fs271frLnp6vRE3DXlvFxF8X09AStxkkLQXZj8aLteArSin6Jj37HCnzV0093QvqOHs`)
+      // console.log("payment btn")
+      const res = await fetch("http://localhost:8080/checkout-payment",{
+        method : "POST",
+        headers : {
+          "content-type" : "application/json"
+        },
+        body  : JSON.stringify(productCartItem)
+      })
+      if(res.statusCode === 500) return;
+
+      const data = await res.json()
+      console.log(data)
+
+      toast("Redirect to payment Gateway...")
+      stripePromise.redirectToCheckout({sessionId : data})}else{
+        toast("You have not Login")
+        setTimeout(()=>{
+          navigate("/login")
+        },1000)
+      }
+    }
   return (
     <>
     
@@ -50,7 +82,7 @@ const Cart = () => {
                 <span className="text-red-500">$</span> {totalPrice}
               </p>
             </div>
-            <button className="bg-slate-500 w-full text-lg font-bold py-2 text-white hover:bg-red-500">
+            <button onClick={handlePayment} className="bg-slate-500 w-full text-lg font-bold py-2 text-white hover:bg-red-500">
               Payment
             </button>
           </div>

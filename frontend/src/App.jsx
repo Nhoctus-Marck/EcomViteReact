@@ -12,12 +12,12 @@ function App() {
     (async()=>{
       const res = await fetch(`http://localhost:8080/product`)
       const resData = await res.json()
-      console.log(resData);
+      // console.log(resData);
       dispatch(setDataProduct(resData))
     })()
   },[])
 
-  console.log(productData)
+  // console.log(productData)
   return (
     <div>
       <Toaster/>

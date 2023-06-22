@@ -6,11 +6,16 @@ import { addCartItem } from '../redux/productSlice'
 
 const Menu = () => {
   const {filterby} = useParams()
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const productData = useSelector((state) => state.product.productList)
   const productDisplay = productData.filter(el => el._id === filterby)[0]
   const handleAddCartProduct = (e)=>{
     dispatch(addCartItem(productDisplay))
+  }
+  const handleBuy =()=>{
+    dispatch(addCartItem(productDisplay))
+    navigate("/cart")
   }
   return (
     <div className='p-2 md:p-4'>
@@ -25,7 +30,7 @@ const Menu = () => {
           <p className=' text-slate-500 font-medium text-2xl'>{productDisplay.category}</p>
           <p className='font-bold md:text-2xl'><span className='text-red-500 '>$</span><span>{productDisplay.price}</span></p> 
           <div className='flex gap-3'>
-            <button className="bg-orange-400 py-1 my-2 mt-2 rounded  hover:bg-yellow-600 min-w-[100px]">Buy</button>
+            <button onClick={handleBuy} className="bg-orange-400 py-1 my-2 mt-2 rounded  hover:bg-yellow-600 min-w-[100px]">Buy</button>
             <button onClick={handleAddCartProduct} className="bg-orange-400 py-1 my-2 mt-2 rounded  hover:bg-yellow-600 min-w-[100px]">Add to Cart</button> 
           </div>
           <div className="">
