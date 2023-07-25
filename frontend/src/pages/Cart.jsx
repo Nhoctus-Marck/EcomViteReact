@@ -5,17 +5,79 @@ import CartProduct from '../component/cartProduct'
 import EmptyCartImg from "../../src/assets/empty.png"
 import { toast } from 'react-hot-toast'
 import {loadStripe} from "@stripe/stripe-js"
-import { useNavigate } from 'react-router-dom'
+import { useHref, useNavigate } from 'react-router-dom'
+import { initMercadoPago, Wallet } from '@mercadopago/sdk-react'
+import { useState } from 'react'
+import axios from 'axios'
+
 
 const Cart = () => {
+  const [preferenceId,setPreferenceId] = useState(null)
     const productCartItem = useSelector((state)=>state.product.cartItem)
     // console.log(productCartItem)
     const totalPrice = productCartItem.reduce((acc,curr)=>acc +parseInt(curr.total),0)
     const totalQty = productCartItem.reduce((acc,curr)=>acc +parseInt(curr.qty),0)
+    console.log(totalQty)
     const user = useSelector(state=>state.user)
     const navigate = useNavigate()
+    initMercadoPago(`TEST-36e0bb28-9d58-4d27-b398-b68ff9e21586`);
+    const productCartItemArr = Object.values(productCartItem);
 
-    
+    console.log(productCartItem.length)
+
+    const onMercadoPBtn = ()=>{
+      toast("Message : In Mercado pago, Only add product for transaction.")
+    }
+
+    const getPreference = async()=>{
+      if(productCartItem.length === 1){
+      const res = await axios.post("http://localhost:8080/create_preference",{
+      // method : "POST",
+      // headers : {
+      //     "content-type" : "application/json"
+      // },
+      // body: JSON.stringify(productCartItem)
+
+        //  items: productCartItemArr.map((item)=>{
+        //   return{
+        //     name: item.name,
+        //     category:item.category,
+        //     description:item.description,
+        //     image:item.image,
+        //     price:item.price,
+        //     qty:item.qty,
+        //   }}),
+            name: productCartItem[0].name,
+            category:productCartItem[0].category,
+            description:productCartItem[0].description,
+            image:productCartItem[0].image.toString(32).substring(2, 5) + Math.random().toString(32).substring(2, 5),
+            price:totalPrice,
+            qty:productCartItem[0].qty
+         
+      })
+      // .then((res)=>window.location.href = res.data.response.body.init_point)
+      if(res.statusCode === 500) return;
+
+      const{ id } = await res.data
+      console.log(id)
+      if(id){
+        setPreferenceId(id)
+        toast("Redirect to payment Gateway...")
+      }
+    }else{
+      toast("You can only add one type of product by this means of payment, please remove the other products or use another method")
+    }
+    }
+    const handlePaymentMercadoPago = async()=>{
+      const id = await getPreference()
+      if(id){
+        setPreferenceId(id)
+      }
+      toast("Redirect to payment Gateway...")
+      // setTimeout(()=>{
+      //   window.open(`${id}`)
+      // },1000)
+    }
 
     const handlePayment = async()=>{
       if(user.email){
@@ -83,8 +145,12 @@ const Cart = () => {
               </p>
             </div>
             <button onClick={handlePayment} className="bg-slate-500 w-full text-lg font-bold py-2 text-white hover:bg-red-500">
-              Payment
+              Payment Stripe
             </button>
+            <button onClick={getPreference} onMouseOver={()=> toast("Message : In Mercado pago, Only add product for transaction") } className="bg-slate-500 w-full text-lg font-bold py-2 text-white hover:bg-red-500">
+              Payment Mercado Pago
+            </button>
+            {preferenceId && <Wallet initialization={{preferenceId}}/>}
           </div>
         </div>
 

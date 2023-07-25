@@ -15,6 +15,7 @@ import {Provider} from 'react-redux'
 import Cart from './pages/Cart'
 import Success from './pages/Success'
 import Cancel from './pages/Cancel'
+import ClothesList from './pages/ClothesList'
 
 
 // const isLoggedIn = window.sessionStorage.getItem("loggedIn")
@@ -33,6 +34,7 @@ const router = createBrowserRouter(
       <Route path='cart' element={<Cart/>}/>
       <Route path='success' element={<Success/>}/>
       <Route path='cancel' element={<Cancel/>}/>
+      <Route path='ClothesList' element={<ClothesList/>}/>
     </Route >
   )
 )

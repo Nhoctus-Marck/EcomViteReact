@@ -6,12 +6,28 @@ import {BsCartFill} from 'react-icons/bs'
 import { useSelector , useDispatch} from 'react-redux'
 import {logoutRedux} from "../redux/userSlice"
 import {toast} from "react-hot-toast"
+import {BiSearch} from "react-icons/bi"
+import { searchFilter } from "../redux/productSlice";
+import {useEffect} from 'react';
+import Home from '../pages/Home'
+
 
 const Header = () => {
+  const dispatch = useDispatch()
+  const stateSearch = useSelector((state) => state.product.searchItem);
+  
+    // Search
+    const [searchData,setSearchData] = useState("")
+
+    function handleSubmitSearch(e){
+      e.preventDefault()
+      setSearchData(e.target.value)
+      dispatch(searchFilter(searchData))
+    }
+    
     const [showMenu,setShowMenu] = useState(false)
     const userData = useSelector((state)=>state.user)
-    // console.log(userData);
-    const dispatch = useDispatch()
+
     const handleShowMenu = () =>{
         setShowMenu(preve => !preve)
     }
@@ -19,23 +35,49 @@ const Header = () => {
       dispatch(logoutRedux())
       window.sessionStorage.clear()
       toast("Logout Successfully")
-      // console.log(userData);
     }
+    useEffect(() => {
+      const keyDownHandler = event => {
+        
+  
+        if (event.key === 'Enter' && window.location.pathname === "/") {
+          event.preventDefault();
+          console.log('User pressed: ', event.key);
+          document.location.href = '/clotheslist'
+        }
+      };
+  
+      document.addEventListener('keydown', keyDownHandler);
+  
+      return () => {
+        document.removeEventListener('keydown', keyDownHandler);
+      };
+    }, [Home]);
+
     const cartItemNumber = useSelector((state) =>state.product.cartItem)
     const LoginSessUser = window.localStorage.getItem('token')
     const LoginSessUserImage = window.localStorage.getItem('image')
   return (
     <header className="fixed shadow-md w-full h-16 px-2 md:px-4 z-50 bg-white">
       <div className="flex items-center h-full justify-between">
-        <Link to={""}>
-          <div className="h-10">
-            <img src={logo} className="h-full" />
-          </div>
-        </Link>
+          <div className="h-10 flex items-center gap-4 md:gap-7">
+            <div className='h-10 md:gap-7'>
+              <Link to={""}>
+                <img src={logo} className="h-full" />
+              </Link>
+            </div>
+            <div className="flex gap-4 md:gap-1 bg-gray-200 w-80 h-8 items-center rounded-md hover:bg-gray-300">  
+              <BiSearch className='w-10'/>
+              <form action="" onSubmit={handleSubmitSearch}>
+                <input  type="text" id='searchData'name="searchData" className='bg-gray-200 w-64 h-6 hover:bg-gray-300 rounded-md focus:outline-none' onChange={(e)=> handleSubmitSearch(e)}  placeholder='Search Clothes' />
+              </form>
+              
+            </div>
+          </div>     
         <div className="flex items-center gap-4 md:gap-7">
           <nav className="gap-4 md:gap-6 text-base md:text-lg hidden md:flex">
             <Link to={""}>Home</Link>
-            {/* <Link to={"/"}>Menu</Link> */}
+            <Link to={"clotheslist"}>Search</Link>
             <Link to={"about"}>About</Link>
             <Link to={"contact"}>Contact</Link>
           </nav>
@@ -60,7 +102,7 @@ const Header = () => {
                 }
                 <nav className="text-base md:text-lg flex flex-col md:hidden">
                 <Link to={""} className='px-2 py-1'>Home</Link>
-                {/* <Link to={"/"}className='px-2'>Menu</Link> */}
+                <Link to={"clotheslist"}>Search</Link>
                 <Link to={"about"}className='px-2'>About</Link>
                 <Link to={"contact"}className='px-2'>Contact</Link>
                 </nav>

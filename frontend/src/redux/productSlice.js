@@ -3,7 +3,8 @@ import { toast } from "react-hot-toast"
 
 const initialState = {
     productList : [],
-    cartItem: []
+    cartItem: [],
+    searchItem: [],
 }
 
 export const productSlice = createSlice({
@@ -13,6 +14,9 @@ export const productSlice = createSlice({
         setDataProduct : (state,action)=>{
             // console.log(action)
             state.productList= [...action.payload]
+        },
+        searchFilter:(state,action)=>{
+            state.searchItem =  action.payload.toLowerCase()
         },
         addCartItem : (state,action)=>{
             // console.log(action)
@@ -62,5 +66,5 @@ export const productSlice = createSlice({
 
     }
 })
-export const {setDataProduct,addCartItem,deleteCartItem,increaseQty,decreaseQty} = productSlice.actions
+export const {setDataProduct,addCartItem,deleteCartItem,increaseQty,decreaseQty,searchFilter} = productSlice.actions
 export default productSlice.reducer

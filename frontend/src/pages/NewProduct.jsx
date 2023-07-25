@@ -22,7 +22,7 @@ const NewProduct = () => {
   }
   const uploadImage = async (e) =>{
     const data = await ImageToBase64(e.target.files[0])
-    // console.log(data)
+    
     setData((preve)=>{
       return{
           ...preve,
@@ -32,7 +32,7 @@ const NewProduct = () => {
   }
   const handleSubmit = async(e) =>{
     e.preventDefault()
-    console.log(data);
+    
 
      const {name,image,category,price} = data
     if(name && image && category && price){

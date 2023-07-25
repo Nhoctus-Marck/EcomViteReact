@@ -3,12 +3,15 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const dontenv = require("dotenv").config()
 const Stripe = require('stripe')
+const mercadopago = require("mercadopago");
 
 const app = express()
+app.use(express.urlencoded({ extended: false }));
 app.use(cors())
 app.use(express.json({ limit: "10mb" }));
+app.use(express.static("../../client/html-js"));
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.DB_HOST || 8080;
 
 //mongodb connection
 // console.log(process.env.MONGODB_URL)
@@ -34,7 +37,7 @@ const productSchema = mongoose.Schema({
   name:String,
   category:String,
   image:String,
-  price :String,
+  price :Number,
   description:String,
 });
 
@@ -95,7 +98,7 @@ app.post("/login", async (req, res) => {
 })
 
 app.post("/UploadProduct", async (req, res) => {
-  // console.log(req.body);
+  console.log(req.body);
   const data = await productModel(req.body)
   const datasave = await data.save()
   res.send({
@@ -107,7 +110,49 @@ app.get("/product",async(req,res)=>{
   res.send(JSON.stringify(data))
 })
 
-//Payment getway /*
+//Payment getway MercadoPago
+mercadopago.configure({
+  access_token: process.env.MERCADOPAGO_KEY,
+});
+
+app.post("/create_preference",async(req, res) => {
+  const {name,_id,image,description,category,price,qty,totalQty} = req.body
+  try {
+    let preference = {
+      quantity:totalQty,
+      items: 
+        [
+          {title: name,
+            id:_id,
+            picture_url:image,
+            description: description,
+            category_id: category,
+          	unit_price: Number(price),
+          	quantity: qty,}
+        ],
+      quantity:totalQty
+      ,
+      back_urls: {
+        success: "http:127.0.0.1:5173/success",
+        failure: "http:127.0.0.1:5173/cancel",
+        pending: ""
+      },
+      auto_return: "approved",
+      binary_mode: true,
+    }
+    
+    const session = await mercadopago.preferences.create(preference)
+    // const session = await stripe.checkout.sessions.create(params)
+    res.status(200).json({id: session.body.id})
+    console.log(session)
+    
+  } catch (err) {
+    res.status(err.statusCode || 500).json(res.session)
+    console.log(err.message)
+  }
+  console.log(req.body)
+});
+//Payment getway Stripe/*
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 app.post("/checkout-payment",async(req,res)=>{
   console.log(req.body)

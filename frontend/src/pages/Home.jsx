@@ -5,11 +5,11 @@ import { useRef } from "react";
 import CardFeature from "../component/CardFeature";
 import { GrFormPrevious, GrFormNext } from "react-icons/gr";
 import AllProduct from "../component/AllProduct";
+import ClothesList from "./ClothesList";
 
 const Home = () => {
   const productData = useSelector((state) => state.product.productList);
   // console.log(productData);
-
   const homeProductCartList = productData.slice(0, 4);
   const homeProductCartListTshirts = productData.filter(
     (el) => el.category === el.category,
@@ -33,7 +33,7 @@ const Home = () => {
       <div className="md:flex gap-4 py-2">
         <div className="md:w-1/2">
           <div className="flex gap-3 bg-slate-300 w-36 px-2 items-center rounded-full">
-            <p className="text-sm font-medium text-slate-900">Bike Delivery</p>
+            <p className="text-sm font-medium text-slate-900">Contact Us:</p>
             <img src="" alt="" className="h-7" />
           </div>
           <h2 className="text-4xl md:text-7xl font-bold py-3">
@@ -111,7 +111,8 @@ const Home = () => {
               })}
         </div>
       </div>
-      <AllProduct heading={"Your Clothes"}/>
+      <AllProduct heading={"Filters :"}/>
+      {/* <ClothesList/> */}
     </div>
   );
 };
