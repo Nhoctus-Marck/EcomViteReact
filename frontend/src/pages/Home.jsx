@@ -29,16 +29,16 @@ const Home = () => {
   };
 
   return (
-    <div className="p-2 md:p-4">
+    <div className="p-2 md:p-4 bg-gradient-to-t from-100 to-400">
       <div className="md:flex gap-4 py-2">
         <div className="md:w-1/2">
-          <div className="flex gap-3 bg-slate-300 w-36 px-2 items-center rounded-full">
+          <div className="flex gap-3 bg-50 border-500 border-2 w-36 px-2 items-center rounded-full">
             <p className="text-sm font-medium text-slate-900">Contact Us:</p>
             <img src="" alt="" className="h-7" />
           </div>
           <h2 className="text-4xl md:text-7xl font-bold py-3">
-            The clothing store that has everything you need in{" "}
-            <span className="text-orange-400 text">Your Home</span>
+           The clothing store that has everything you need from{" "}
+            <span className="text-900 text-6xl">Your Home</span>
           </h2>
           <p className="py-3 text-base">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam
@@ -46,8 +46,8 @@ const Home = () => {
             voluptatum, et excepturi ducimus voluptatibus minus enim ab omnis
             amet. Numquam.
           </p>
-          <button className="font-bold bg-orange-500 text-slate-200 px-4 py-2 rounded-md">
-            Buy Now
+          <button className="font-bold bg-900 text-slate-200 px-4 py-2 rounded-md">
+          Download App
           </button>
         </div>
         <div className="md:w-1/2 flex flex-wrap gap-5 p-4 justify-center">
@@ -77,13 +77,13 @@ const Home = () => {
           <div className="ml-auto flex gap-4">
             <button
               onClick={preveProduct}
-              className="bg-slate-500 hover:b-slate-400 text-lg p-1 rounded"
+              className="bg-800 hover:b-slate-400 text-lg p-1 rounded"
             >
               <GrFormPrevious />
             </button>
             <button
               onClick={nextProduct}
-              className="bg-slate-500 hover:b-slate-400 text-lg p-1 rounded"
+              className="bg-800 hover:b-slate-400 text-lg p-1 rounded"
             >
               <GrFormNext />
             </button>

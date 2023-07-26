@@ -58,7 +58,7 @@ const Header = () => {
     const LoginSessUser = window.localStorage.getItem('token')
     const LoginSessUserImage = window.localStorage.getItem('image')
   return (
-    <header className="fixed shadow-md w-full h-16 px-2 md:px-4 z-50 bg-white">
+    <header className="fixed shadow-md w-full h-16 px-2 md:px-4 z-50 bg-50 border-400 border-[1px] rounded-sm">
       <div className="flex items-center h-full justify-between">
           <div className="h-10 flex items-center gap-4 md:gap-7">
             <div className='h-10 md:gap-7'>
@@ -66,7 +66,7 @@ const Header = () => {
                 <img src={logo} className="h-full" />
               </Link>
             </div>
-            <div className="flex gap-4 md:gap-1 bg-gray-200 w-80 h-8 items-center rounded-md hover:bg-gray-300">  
+            <div className="flex gap-4 bg-gray-200 w-80 h-8 items-center rounded-md hover:bg-gray-300">  
               <BiSearch className='w-10'/>
               <form action="" onSubmit={handleSubmitSearch}>
                 <input  type="text" id='searchData'name="searchData" className='bg-gray-200 w-64 h-6 hover:bg-gray-300 rounded-md focus:outline-none' onChange={(e)=> handleSubmitSearch(e)}  placeholder='Search Clothes' />
